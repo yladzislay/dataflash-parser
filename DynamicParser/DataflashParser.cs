@@ -8,8 +8,8 @@ namespace Parser;
 
 public class DataflashParser
 {
-    private const byte FORMAT_MESSAGE_TYPE = 0x80;
-    private const byte END_OF_MESSAGE_MARKER = 0xFF;
+    private const byte FormatMessageType = 0x80;
+    private const byte EndOfMessageMarker = 0xFF;
 
     public Dictionary<string, dynamic> MessageFormatDictionary { get; }
     public Dictionary<string, List<dynamic>> Messages { get; }
@@ -38,10 +38,10 @@ public class DataflashParser
 
             switch (messageType)
             {
-                case FORMAT_MESSAGE_TYPE:
+                case FormatMessageType:
                     ReadFormatMessage(reader);
                     break;
-                case END_OF_MESSAGE_MARKER:
+                case EndOfMessageMarker:
                     break;
                 default:
                     ReadDataMessage(reader, messageType);
