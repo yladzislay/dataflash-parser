@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "VOKNEcSqCQtrVObIZ/kfYodjUfV02oy+tQCXPUn5eqdSFRio4TBNpZTNCfZfd1VHz1qw6PQ6cEum14eUMZyJ/g==",
+  "success": true,
+  "projectFilePath": "/Users/uladzislau/Projects/dataflash-parser/DataflashParser/DataflashParser.csproj",
+  "expectedPackageFiles": [
+    "/Users/uladzislau/.nuget/packages/geocoordinate.netcore/1.0.0.1/geocoordinate.netcore.1.0.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

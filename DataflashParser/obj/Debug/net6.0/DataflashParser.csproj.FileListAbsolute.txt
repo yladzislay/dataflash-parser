@@ -1,0 +1,12 @@
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/bin/Debug/net6.0/DataflashParser.deps.json
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/bin/Debug/net6.0/DataflashParser.dll
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/bin/Debug/net6.0/DataflashParser.pdb
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/DataflashParser.csproj.AssemblyReference.cache
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/DataflashParser.GeneratedMSBuildEditorConfig.editorconfig
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/DataflashParser.AssemblyInfoInputs.cache
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/DataflashParser.AssemblyInfo.cs
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/DataflashParser.csproj.CoreCompileInputs.cache
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/DataflashParser.dll
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/refint/DataflashParser.dll
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/DataflashParser.pdb
+/Users/uladzislau/Projects/aorion-cloud-1.4.2/DataflashParser/obj/Debug/net6.0/ref/DataflashParser.dll
