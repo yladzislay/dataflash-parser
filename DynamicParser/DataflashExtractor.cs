@@ -9,17 +9,17 @@ namespace Parser
 {
     public class DataflashExtractor
     {
-        public Dictionary<string, List<dynamic>> _messages;
         public Dictionary<string, dynamic> _messageFormatDictionary;
+        public Dictionary<string, List<dynamic>> _messages;
         public Dictionary<string, Dictionary<string, IEnumerable<object>>> AllMessages2;
 
         public DataflashExtractor(Dictionary<string, List<dynamic>> messages, Dictionary<string, dynamic> messageFormatDictionary)
         {
             _messages = messages;
             _messageFormatDictionary = messageFormatDictionary;
-            
+
             ReGroupByInstances();
-            
+
             AllMessages2 = new Dictionary<string, Dictionary<string, IEnumerable<object>>>();
             CalculateAllMessages2();
         }
@@ -36,7 +36,7 @@ namespace Parser
             // 	Fill Each group from Main.
             // 	Remove Main group.
 
-            var copy = _messages.Where(@group => @group.Value.Count != 0).ToList();
+            var copy = _messages.Where(group => group.Value.Count != 0).ToList();
             foreach (var messagesGroup in copy)
             {
                 switch (messagesGroup.Key)
@@ -66,12 +66,12 @@ namespace Parser
                             var newGroupValue = messagesGroup.Value.Where(b => b.Instance == instanceNumber)
                                 .ToList();
 
-                            var newFormatDictionaryValue = 
+                            var newFormatDictionaryValue =
                                 _messageFormatDictionary.Values
                                     .Where(x => x.Name == messagesGroup.Key)
                                     .Select(x => new {x.Type, Name = newGroupKey, x.Format, x.Columns})
                                     .First();
-                            
+
                             _messageFormatDictionary.Add(newGroupKey.ToString(), newFormatDictionaryValue);
                             _messages.Add(newGroupKey, newGroupValue);
                         }
@@ -85,7 +85,7 @@ namespace Parser
                         const string instanceFieldName = "IMU";
                         var messageGroupElement = messagesGroup.Value.First();
                         if (!((IDictionary<string, object>) messageGroupElement).ContainsKey(instanceFieldName)) break;
-                        
+
                         var instances = messagesGroup.Value.Select(x => x.IMU).Distinct().ToList();
                         var instancesCount = instances.Count;
                         if (instancesCount == 0) break;
@@ -94,21 +94,21 @@ namespace Parser
                         {
                             var newGroupKey = messagesGroup.Key + "[" + instanceNumber.ToString() + "]";
                             var newGroupValue = messagesGroup.Value.Where(b => b.IMU == instanceNumber).ToList();
-                            
-                            var newFormatDictionaryValue = 
+
+                            var newFormatDictionaryValue =
                                 _messageFormatDictionary.Values
                                     .Where(x => x.Name == messagesGroup.Key)
                                     .Select(x => new {x.Type, Name = newGroupKey, x.Format, x.Columns})
                                     .First();
-                            
+
                             _messageFormatDictionary.Add(newGroupKey.ToString(), newFormatDictionaryValue);
                             _messages.Add(newGroupKey, newGroupValue);
                         }
-                            
+
                         _messages.Remove(messagesGroup.Key);
                         break;
                     }
-                    
+
                     case var thisKey when new Regex(@"^XK\w+").IsMatch(thisKey):
                     {
                         const string instanceFieldName = "C";
@@ -117,21 +117,21 @@ namespace Parser
 
                         var instances = messagesGroup.Value.Select(x => x.C).Distinct().ToList();
                         if (instances.Count == 0) break;
-                        
+
                         foreach (var instanceNumber in instances)
                         {
                             var newGroupKey = messagesGroup.Key + "[" + instanceNumber.ToString() + "]";
-                            var newGroupValue = 
+                            var newGroupValue =
                                 messagesGroup.Value
                                     .Where(b => b.C == instanceNumber)
                                     .ToList();
 
-                            var newFormatDictionaryValue = 
+                            var newFormatDictionaryValue =
                                 _messageFormatDictionary.Values
                                     .Where(x => x.Name == messagesGroup.Key)
                                     .Select(x => new {x.Type, Name = newGroupKey, x.Format, x.Columns})
                                     .First();
-                            
+
                             _messageFormatDictionary.Add(newGroupKey, newFormatDictionaryValue);
                             _messages.Add(newGroupKey, newGroupValue);
                         }
@@ -139,7 +139,7 @@ namespace Parser
                         _messages.Remove(messagesGroup.Key);
                         break;
                     }
-                    
+
                     default:
                     {
                         const string instanceFieldName = "I";
@@ -148,21 +148,21 @@ namespace Parser
 
                         var instances = messagesGroup.Value.Select(x => x.I).Distinct().ToList();
                         if (instances.Count == 0) break;
-                        
+
                         foreach (var instanceNumber in instances)
                         {
                             var newGroupKey = messagesGroup.Key + "[" + instanceNumber.ToString() + "]";
-                            var newGroupValue = 
+                            var newGroupValue =
                                 messagesGroup.Value
                                     .Where(b => b.I == instanceNumber)
                                     .ToList();
 
-                            var newFormatDictionaryValue = 
+                            var newFormatDictionaryValue =
                                 _messageFormatDictionary.Values
                                     .Where(x => x.Name == messagesGroup.Key)
                                     .Select(x => new {x.Type, Name = newGroupKey, x.Format, x.Columns})
                                     .First();
-                            
+
                             _messageFormatDictionary.Add(newGroupKey, newFormatDictionaryValue);
                             _messages.Add(newGroupKey, newGroupValue);
                         }
@@ -180,11 +180,11 @@ namespace Parser
             {
                 AllMessages2.Add(key, new Dictionary<string, IEnumerable<object>>());
 
-                var messageTypeColumns = 
+                var messageTypeColumns =
                     ((IEnumerable<string>) _messageFormatDictionary.Values
                         .FirstOrDefault(x => x.Name == key)
                         ?.Columns ?? Array.Empty<string>())
-                    .Select((x, i) => new { Name = x, Count = 0, Index = i });
+                    .Select((x, i) => new {Name = x, Count = 0, Index = i});
 
                 foreach (var item in messageTypeColumns)
                 {
@@ -194,10 +194,7 @@ namespace Parser
             }
         }
 
-        public IEnumerable<object> QueryMessage(string messageGroupName, string messageGroupColumnName)
-        {
-            return AllMessages2[messageGroupName][messageGroupColumnName];
-        }
+        public IEnumerable<object> QueryMessage(string messageGroupName, string messageGroupColumnName) => AllMessages2[messageGroupName][messageGroupColumnName];
 
         public IEnumerable<dynamic> GetMessagesGroupsAndColumnsInfo()
         {
@@ -254,11 +251,11 @@ namespace Parser
 
         public double GetGpsFlightDistance()
         {
-            if(!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return 0;
-           
-            var key = _messages.ContainsKey("GPS") ? "GPS" 
+            if (!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return 0;
+
+            var key = _messages.ContainsKey("GPS") ? "GPS"
                 : _messages.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
-            
+
             var gpsLatitudePoints = _messages[key].Select(x => x.Lat).Cast<double>().ToArray();
             var gpsLongitudePoints = _messages[key].Select(x => x.Lng).Cast<double>().ToArray();
 
@@ -267,10 +264,10 @@ namespace Parser
 
         public double GetMaxDistanceFromStartPoint()
         {
-            if(!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return 0;
-            var key = _messages.ContainsKey("GPS") ? "GPS" 
+            if (!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return 0;
+            var key = _messages.ContainsKey("GPS") ? "GPS"
                 : _messages.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
-            
+
             var gpsLatitudePoints = _messages[key].Select(x => x.Lat).Cast<double>().ToArray();
             var gpsLongitudePoints = _messages[key].Select(x => x.Lng).Cast<double>().ToArray();
 
@@ -279,10 +276,10 @@ namespace Parser
 
         public dynamic GetGpsDataSetByTimeCode(ulong inputTimeUs)
         {
-            if(!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return null;
-            var key = _messages.ContainsKey("GPS") ? "GPS" 
+            if (!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return null;
+            var key = _messages.ContainsKey("GPS") ? "GPS"
                 : _messages.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
-            
+
             var result = _messages[key].First(x => (ulong) x.TimeUS == inputTimeUs);
             return result;
         }
@@ -292,25 +289,25 @@ namespace Parser
         public string GetUuid()
         {
             var regex = new Regex(@" \w{8} \w{8} \w{8}$");
-            var uuid = (string)_messages["MSG"].Select(x => x.Message).FirstOrDefault(y => regex.IsMatch(y));
+            var uuid = (string) _messages["MSG"].Select(x => x.Message).FirstOrDefault(y => regex.IsMatch(y));
             return string.Concat(uuid.Split(new[] {' '}).Skip(1).ToArray());
         }
 
         public string GetFirmware()
         {
             var regex = new Regex(@"^(ArduCopter|ArduPlane)");
-            var firmware = (string)_messages["MSG"].Select(x => x.Message).FirstOrDefault(y => regex.IsMatch(y));
+            var firmware = (string) _messages["MSG"].Select(x => x.Message).FirstOrDefault(y => regex.IsMatch(y));
             return firmware;
         }
 
         public DateTime? GetFlightStartDate()
         {
-            if(!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return null;
-            var key = _messages.ContainsKey("GPS") ? "GPS" 
+            if (!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return null;
+            var key = _messages.ContainsKey("GPS") ? "GPS"
                 : _messages.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
-            
+
             var firstGpsMessage = _messages[key].FirstOrDefault();
-            
+
             var gpsWeek = (ushort) firstGpsMessage.GWk;
             var gpsSec = (uint) firstGpsMessage.GMS;
 
@@ -323,10 +320,10 @@ namespace Parser
 
         public TimeSpan? GetLoggingDuration()
         {
-            if(!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return null;
-            var key = _messages.ContainsKey("GPS") ? "GPS" 
-                    : _messages.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
-            
+            if (!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return null;
+            var key = _messages.ContainsKey("GPS") ? "GPS"
+                : _messages.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
+
             var firstGpsGwk = (ushort) _messages[key].Select(x => x.GWk).First();
             var firstGpsGms = (uint) _messages[key].Select(x => x.GMS).First();
 
@@ -343,10 +340,10 @@ namespace Parser
 
         public IEnumerable<DateTime> GetTimeLine(IEnumerable<ulong> timeline)
         {
-            if(!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return null;
-            var key = _messages.ContainsKey("GPS") ? "GPS" 
+            if (!_messages.ContainsKey("GPS") && !_messages.ContainsKey("GPS[0]")) return null;
+            var key = _messages.ContainsKey("GPS") ? "GPS"
                 : _messages.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
-            
+
             var result = new List<DateTime>();
             var firstGpsMessage = _messages[key].First();
             var firstGpsTime = GpsTimeParser.GpsTimeToDateTime(int.Parse(firstGpsMessage.GWk.ToString()),
