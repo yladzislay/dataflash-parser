@@ -8,6 +8,10 @@
     <PackageId>DynamicParser</PackageId>
     <LangVersion>11</LangVersion>
     <RootNamespace>Parser</RootNamespace>
+    <Company>Uladzislau Darazhei</Company>
+    <Product>Dataflash Parser</Product>
+    <AssemblyVersion>0.1</AssemblyVersion>
+    <FileVersion>0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
