@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicParser", "DynamicPar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructureParser", "StructureParser\StructureParser.csproj", "{31524E96-1F8F-4EEE-B10B-D8FAD8D7B030}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{154B377B-6848-48AB-A585-6891BAD712EC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{EB065F56-1674-49A0-A96F-3CC43D3DDA64}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{A4517EE3-5215-465A-A71C-EC5FC6D7A789}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4517EE3-5215-465A-A71C-EC5FC6D7A789}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4517EE3-5215-465A-A71C-EC5FC6D7A789}.Release|Any CPU.Build.0 = Release|Any CPU
-		{154B377B-6848-48AB-A585-6891BAD712EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{154B377B-6848-48AB-A585-6891BAD712EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{154B377B-6848-48AB-A585-6891BAD712EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{154B377B-6848-48AB-A585-6891BAD712EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB065F56-1674-49A0-A96F-3CC43D3DDA64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB065F56-1674-49A0-A96F-3CC43D3DDA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB065F56-1674-49A0-A96F-3CC43D3DDA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
