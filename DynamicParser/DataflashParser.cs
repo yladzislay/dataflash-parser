@@ -11,14 +11,14 @@ public class DataflashParser
     private const byte FormatMessageType = 0x80;
     private const byte EndOfMessageMarker = 0xFF;
 
-    public Dictionary<string, dynamic> MessageFormatDictionary { get; }
+    public Dictionary<byte, dynamic> FormatMessages { get; }
     public Dictionary<string, List<dynamic>> Messages { get; }
     
     public DataflashParser(Stream stream)
     {
-        MessageFormatDictionary = new Dictionary<string, dynamic>();
+        FormatMessages = new Dictionary<byte, dynamic>();
         Messages = new Dictionary<string, List<dynamic>>();
-        ReadAllMessagesFromStream(stream);
+        StreamReader(stream);
         CheckGpsMessagesForBadRecords();
     }
 
@@ -27,7 +27,7 @@ public class DataflashParser
         Messages["GPS"].RemoveAll(message => message.Lat == 0 && message.Lng == 0);
     }
 
-    private void ReadAllMessagesFromStream(Stream stream)
+    private void StreamReader(Stream stream)
     {
         using var reader = new BinaryReader(stream);
         while (stream.Position < stream.Length)
@@ -63,16 +63,17 @@ public class DataflashParser
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
         };
 
-        MessageFormatDictionary[formatMessage.Type.ToString()] = formatMessage;
+        FormatMessages[formatMessage.Type] = formatMessage;
         if (!Messages.ContainsKey(formatMessage.Name)) Messages.Add(formatMessage.Name, new List<dynamic>());
     }
 
     private void ReadDataMessage(BinaryReader reader, byte messageType)
     {
-        var fmt = MessageFormatDictionary[messageType.ToString()];
-        var messageLength = fmt.Length - 3;
+        const byte messageHeaderSize = 3;
+        var formatMessage = FormatMessages[messageType];
+        var messageLength = formatMessage.Length - messageHeaderSize;
         var messageData = reader.ReadBytes(messageLength);
-        var formattedMessageData = FormatParser.FormatMessage(messageData, fmt.Columns, fmt.Format, fmt.Name);
-        Messages[fmt.Name].Add(formattedMessageData);
+        var formattedMessageData = FormatParser.FormatMessage(messageData, formatMessage.Columns, formatMessage.Format, formatMessage.Name);
+        Messages[formatMessage.Name].Add(formattedMessageData);
     }
 }
