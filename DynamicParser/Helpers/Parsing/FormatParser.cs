@@ -10,9 +10,6 @@ namespace Parser.Helpers.Parsing
     {
         public static IDictionary<string, object> FormatMessage(byte[] message, string[] messageColumns, string messageFormats, string messageName)
         {
-
-            // What is going on here ?
-            // Dynamic parsing to struct.
             var result = new ExpandoObject() as IDictionary<string, object>;
             
             var messageFormatsArray = messageFormats.ToCharArray();
