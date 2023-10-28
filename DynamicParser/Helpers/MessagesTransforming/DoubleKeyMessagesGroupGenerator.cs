@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Parser.Helpers.Extracting
+namespace Parser.Helpers.MessagesTransforming
 {
-    public static class MessageTransformer
+    public static partial class MessagesTransformingHelper
     {
         public static Dictionary<string, Dictionary<string, IEnumerable<object>>> TransformMessagesToDoubleDictionaryOld(
             Dictionary<string, List<dynamic>> messages,

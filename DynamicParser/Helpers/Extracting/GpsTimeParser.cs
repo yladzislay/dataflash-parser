@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Parser.Helpers.Parsing
+namespace Parser.Helpers.Extracting
 {
-    public static class GpsTimeParser
+    public static partial class ExtractingHelpers
     {
-        public static DateTime GpsTimeToDateTime(int gpsWeek, double gpsMilliseconds)
+        public static DateTime ConvertGpsTimeToDateTime(int gpsWeek, double gpsMilliseconds)
         {
             var gpsSeconds = gpsMilliseconds / 1000;
             var leapSecondsGps = LeapSecondsGps(DateTime.Now.Year, DateTime.Now.Month);

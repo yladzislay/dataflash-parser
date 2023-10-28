@@ -73,7 +73,12 @@ public class DataflashParser
         var formatMessage = FormatMessages[messageType];
         var messageLength = formatMessage.Length - messageHeaderSize;
         var messageData = reader.ReadBytes(messageLength);
-        var formattedMessageData = FormatParser.FormatMessage(messageData, formatMessage.Columns, formatMessage.Format, formatMessage.Name);
+        var formattedMessageData = ParsingHelpers
+            .MarshallDataMessage(
+                message:messageData,
+                messageColumns:formatMessage.Columns, 
+                messageFormats:formatMessage.Format, 
+                messageName:formatMessage.Name);
         Messages[formatMessage.Name].Add(formattedMessageData);
     }
 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using GeoCoordinatePortable;
 
-namespace Parser.Helpers
+namespace Parser.Helpers.Extracting
 {
     public static class CalculationHelper
     {
@@ -26,12 +26,12 @@ namespace Parser.Helpers
 
             for (var index = 0; index < gpsLatitudePoints.Length-1; index++)
             {
-                var distane =
+                var distance =
                     new GeoCoordinate(gpsLatitudePoints[index], gpsLongitudePoints[index])
                         .GetDistanceTo(
                         new GeoCoordinate(gpsLatitudePoints[index + 1], gpsLongitudePoints[index + 1]));
 
-                result.Add(distane);
+                result.Add(distance);
             }
             
             return result.Sum();
@@ -43,7 +43,9 @@ namespace Parser.Helpers
 
             for (var index = 0; index < gpsLatitudePoints.Length - 1; index++)
             {
-                result.Add(new GeoCoordinate(gpsLatitudePoints[0], gpsLongitudePoints[0]).GetDistanceTo(new GeoCoordinate(gpsLatitudePoints[index + 1], gpsLongitudePoints[index + 1])));
+                result.Add(
+                    new GeoCoordinate(gpsLatitudePoints[0], gpsLongitudePoints[0])
+                        .GetDistanceTo(new GeoCoordinate(gpsLatitudePoints[index + 1], gpsLongitudePoints[index + 1])));
             }
 
             return result.Max();

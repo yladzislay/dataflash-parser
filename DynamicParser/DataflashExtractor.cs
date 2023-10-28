@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Parser.Helpers;
-using Parser.Helpers.Parsing;
+using Parser.Helpers.Extracting;
+using Parser.Helpers.MessagesTransforming;
 
 namespace Parser
 {
@@ -17,147 +17,7 @@ namespace Parser
             MessagesGroups = messagesGroups;
             FormatMessages = formatMessages;
 
-            ReGroupByInstances();
-        }
-        
-        private void ReGroupByInstances()
-        {
-            var copy = MessagesGroups.Where(group => group.Value.Count != 0).ToList();
-            foreach (var messagesGroup in copy)
-            {
-                switch (messagesGroup.Key)
-                {
-                    case "HEAT":
-                    case "PIDA":
-                    case "PIDP":
-                    case "PIDR":
-                    case "PIDY":
-                    case "PIDE":
-                    case "PIDN":
-                    case var thisKey when new Regex(@"^PID[0-9]+$").IsMatch(thisKey):
-                        break;
-
-                    case "RFND":
-                    {
-                        const string instanceFieldName = "Instance";
-                        var messageGroupElement = messagesGroup.Value.First();
-                        if (!((IDictionary<string, object>) messageGroupElement).ContainsKey(instanceFieldName)) break;
-
-                        var instances = messagesGroup.Value.Select(x => x.Instance).Distinct().ToList();
-                        if (instances.Count == 0) break;
-
-                        foreach (var instanceNumber in instances)
-                        {
-                            var newGroupKey = messagesGroup.Key + "[" + instanceNumber.ToString() + "]";
-                            var newGroupValue = messagesGroup.Value.Where(b => b.Instance == instanceNumber)
-                                .ToList();
-
-                            var newFormatDictionaryValue =
-                                FormatMessages.Values
-                                    .Where(x => x.Name == messagesGroup.Key)
-                                    .Select(x => new {x.Type, Name = newGroupKey, x.Format, x.Columns})
-                                    .First();
-
-                            FormatMessages.Add(newGroupKey.ToString(), newFormatDictionaryValue);
-                            MessagesGroups.Add(newGroupKey, newGroupValue);
-                        }
-
-                        MessagesGroups.Remove(messagesGroup.Key);
-                        break;
-                    }
-
-                    case "VIBE":
-                    {
-                        const string instanceFieldName = "IMU";
-                        var messageGroupElement = messagesGroup.Value.First();
-                        if (!((IDictionary<string, object>) messageGroupElement).ContainsKey(instanceFieldName)) break;
-
-                        var instances = messagesGroup.Value.Select(x => x.IMU).Distinct().ToList();
-                        var instancesCount = instances.Count;
-                        if (instancesCount == 0) break;
-
-                        foreach (var instanceNumber in instances)
-                        {
-                            var newGroupKey = messagesGroup.Key + "[" + instanceNumber.ToString() + "]";
-                            var newGroupValue = messagesGroup.Value.Where(b => b.IMU == instanceNumber).ToList();
-
-                            var newFormatDictionaryValue =
-                                FormatMessages.Values
-                                    .Where(x => x.Name == messagesGroup.Key)
-                                    .Select(x => new {x.Type, Name = newGroupKey, x.Format, x.Columns})
-                                    .First();
-
-                            FormatMessages.Add(newGroupKey.ToString(), newFormatDictionaryValue);
-                            MessagesGroups.Add(newGroupKey, newGroupValue);
-                        }
-
-                        MessagesGroups.Remove(messagesGroup.Key);
-                        break;
-                    }
-
-                    case var thisKey when new Regex(@"^XK\w+").IsMatch(thisKey):
-                    {
-                        const string instanceFieldName = "C";
-                        var messageGroupElement = messagesGroup.Value.First();
-                        if (!((IDictionary<string, object>) messageGroupElement).ContainsKey(instanceFieldName)) break;
-
-                        var instances = messagesGroup.Value.Select(x => x.C).Distinct().ToList();
-                        if (instances.Count == 0) break;
-
-                        foreach (var instanceNumber in instances)
-                        {
-                            var newGroupKey = messagesGroup.Key + "[" + instanceNumber.ToString() + "]";
-                            var newGroupValue =
-                                messagesGroup.Value
-                                    .Where(b => b.C == instanceNumber)
-                                    .ToList();
-
-                            var newFormatDictionaryValue =
-                                FormatMessages.Values
-                                    .Where(x => x.Name == messagesGroup.Key)
-                                    .Select(x => new {x.Type, Name = newGroupKey, x.Format, x.Columns})
-                                    .First();
-
-                            FormatMessages.Add(newGroupKey, newFormatDictionaryValue);
-                            MessagesGroups.Add(newGroupKey, newGroupValue);
-                        }
-
-                        MessagesGroups.Remove(messagesGroup.Key);
-                        break;
-                    }
-
-                    default:
-                    {
-                        const string instanceFieldName = "I";
-                        var messageGroupElement = messagesGroup.Value.First();
-                        if (!((IDictionary<string, object>) messageGroupElement).ContainsKey(instanceFieldName)) break;
-
-                        var instances = messagesGroup.Value.Select(x => x.I).Distinct().ToList();
-                        if (instances.Count == 0) break;
-
-                        foreach (var instanceNumber in instances)
-                        {
-                            var newGroupKey = messagesGroup.Key + "[" + instanceNumber.ToString() + "]";
-                            var newGroupValue =
-                                messagesGroup.Value
-                                    .Where(b => b.I == instanceNumber)
-                                    .ToList();
-
-                            var newFormatDictionaryValue =
-                                FormatMessages.Values
-                                    .Where(x => x.Name == messagesGroup.Key)
-                                    .Select(x => new {x.Type, Name = newGroupKey, x.Format, x.Columns})
-                                    .First();
-
-                            FormatMessages.Add(newGroupKey, newFormatDictionaryValue);
-                            MessagesGroups.Add(newGroupKey, newGroupValue);
-                        }
-
-                        MessagesGroups.Remove(messagesGroup.Key);
-                        break;
-                    }
-                }
-            }
+            MessagesTransformingHelper.ReGroupByInstances(FormatMessages, MessagesGroups);
         }
 
         public IEnumerable<dynamic> GetMessagesGroupsAndColumnsInfo()
@@ -282,7 +142,7 @@ namespace Parser
             var gpsWeek = (ushort) firstGpsMessage.GWk;
             var gpsSec = (uint) firstGpsMessage.GMS;
 
-            var firstGpsDateTime = GpsTimeParser.GpsTimeToDateTime(gpsWeek, gpsSec);
+            var firstGpsDateTime = ExtractingHelpers.ConvertGpsTimeToDateTime(gpsWeek, gpsSec);
 
             return firstGpsDateTime;
         }
@@ -299,8 +159,8 @@ namespace Parser
             var lastGpsGwk = (ushort) MessagesGroups[key].Select(x => x.GWk).Last();
             var lastGpsGms = (uint) MessagesGroups[key].Select(x => x.GMS).Last();
 
-            var startDate = GpsTimeParser.GpsTimeToDateTime(firstGpsGwk, firstGpsGms);
-            var lastDate = GpsTimeParser.GpsTimeToDateTime(lastGpsGwk, lastGpsGms);
+            var startDate = ExtractingHelpers.ConvertGpsTimeToDateTime(firstGpsGwk, firstGpsGms);
+            var lastDate = ExtractingHelpers.ConvertGpsTimeToDateTime(lastGpsGwk, lastGpsGms);
 
             var result = lastDate.Subtract(startDate);
 
@@ -314,7 +174,7 @@ namespace Parser
                 : MessagesGroups.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
 
             var firstGpsMessage = MessagesGroups[key].First();
-            var firstGpsTime = GpsTimeParser.GpsTimeToDateTime(int.Parse(firstGpsMessage.GWk.ToString()),
+            var firstGpsTime = ExtractingHelpers.ConvertGpsTimeToDateTime(int.Parse(firstGpsMessage.GWk.ToString()),
                 long.Parse(firstGpsMessage.GMS.ToString()) / 1000.0);
 
             return timeline

@@ -6,23 +6,23 @@ using System.Text;
 
 namespace Parser.Helpers.Parsing
 {
-    public static class FormatParser
+    public static partial class ParsingHelpers
     {
-        public static IDictionary<string, object> FormatMessage(byte[] message, string[] messageColumns, string messageFormats, string messageName)
+        public static IDictionary<string, object> MarshallDataMessage(byte[] message, string[] messageColumns, string messageFormats, string messageName)
         {
             var result = new ExpandoObject() as IDictionary<string, object>;
-            
+
             var messageFormatsArray = messageFormats.ToCharArray();
             var offset = 0;
 
             try
             {
-                for(var i = 0; i < messageFormatsArray.Length; i++)
+                for (var i = 0; i < messageFormatsArray.Length; i++)
                 {
                     switch (messageFormatsArray[i])
                     {
                         case 'b':
-                            result.Add(messageColumns[i],(sbyte) message[offset]);
+                            result.Add(messageColumns[i], (sbyte) message[offset]);
                             offset++;
                             break;
                         case 'B':
@@ -113,7 +113,7 @@ namespace Parser.Helpers.Parsing
                 Console.WriteLine($"Log_Parsing_Exception: When Formatting [{messageName}] message group.");
                 return result;
             }
-            
+
             return result;
         }
     }
