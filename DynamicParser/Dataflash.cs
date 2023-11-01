@@ -15,9 +15,9 @@ namespace Parser
 
         public void CheckGpsMessagesForBadRecords()
         {
-            if (Messages.ContainsKey("GPS"))
+            if (Messages.TryGetValue("GPS", out var gpsMessages))
             {
-                Messages["GPS"].RemoveAll(message => message.Lat == 0 && message.Lng == 0);
+                gpsMessages.RemoveAll(message => message.Lat == 0 && message.Lng == 0);
             }
         }
     }
