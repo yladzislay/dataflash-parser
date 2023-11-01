@@ -25,12 +25,12 @@ namespace Parser
                 switch (messageType)
                 {
                     case FormatMessageType:
-                        ReadFormatMessage(reader, formatMessages, messages);
+                        reader.ReadFormatMessage(formatMessages, messages);
                         break;
                     case EndOfMessageMarker:
                         break;
                     default:
-                        ReadDataMessage(reader, messageType, formatMessages, messages);
+                        reader.ReadDataMessage(messageType, formatMessages, messages);
                         break;
                 }
             }
@@ -39,7 +39,7 @@ namespace Parser
         }
 
         private static void ReadFormatMessage(
-            BinaryReader reader,
+            this BinaryReader reader,
             Dictionary<byte, dynamic> formatMessages, 
             Dictionary<string, List<dynamic>> messages
             )
@@ -60,7 +60,7 @@ namespace Parser
         }
 
         private static void ReadDataMessage(
-            BinaryReader reader,
+            this BinaryReader reader,
             byte messageType, 
             Dictionary<byte, dynamic> formatMessages, 
             Dictionary<string, List<dynamic>> messages
