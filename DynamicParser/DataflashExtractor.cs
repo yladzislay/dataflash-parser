@@ -142,7 +142,7 @@ namespace Parser
             var gpsWeek = (ushort) firstGpsMessage.GWk;
             var gpsSec = (uint) firstGpsMessage.GMS;
 
-            var firstGpsDateTime = ExtractingHelpers.ConvertGpsTimeToDateTime(gpsWeek, gpsSec);
+            var firstGpsDateTime = ExtractingHelpers.ConvertGpsToUtcDateTime(gpsWeek, gpsSec);
 
             return firstGpsDateTime;
         }
@@ -159,8 +159,8 @@ namespace Parser
             var lastGpsGwk = (ushort) MessagesGroups[key].Select(x => x.GWk).Last();
             var lastGpsGms = (uint) MessagesGroups[key].Select(x => x.GMS).Last();
 
-            var startDate = ExtractingHelpers.ConvertGpsTimeToDateTime(firstGpsGwk, firstGpsGms);
-            var lastDate = ExtractingHelpers.ConvertGpsTimeToDateTime(lastGpsGwk, lastGpsGms);
+            var startDate = ExtractingHelpers.ConvertGpsToUtcDateTime(firstGpsGwk, firstGpsGms);
+            var lastDate = ExtractingHelpers.ConvertGpsToUtcDateTime(lastGpsGwk, lastGpsGms);
 
             var result = lastDate.Subtract(startDate);
 
@@ -174,7 +174,7 @@ namespace Parser
                 : MessagesGroups.ContainsKey("GPS[0]") ? "GPS[0]" : string.Empty;
 
             var firstGpsMessage = MessagesGroups[key].First();
-            var firstGpsTime = ExtractingHelpers.ConvertGpsTimeToDateTime(int.Parse(firstGpsMessage.GWk.ToString()),
+            var firstGpsTime = ExtractingHelpers.ConvertGpsToUtcDateTime(int.Parse(firstGpsMessage.GWk.ToString()),
                 long.Parse(firstGpsMessage.GMS.ToString()) / 1000.0);
 
             return timeline
