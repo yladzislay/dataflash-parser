@@ -28,8 +28,8 @@ public class DataflashParserTests
         Assert.NotNull(directoryPath);
         var filePath = Path.Combine(directoryPath, "Logs", "dataflash-sample-1.bin");
         using var file = File.OpenRead(filePath);
-        var parsedLog = new DataflashParser(file);
-        var logExtractor = new DataflashExtractor(parsedLog.Messages, parsedLog.FormatMessages);
+        var dataflash = DataflashParser.ParseDataflash(file);
+        var logExtractor = new DataflashExtractor(dataflash.Messages, dataflash.FormatMessages);
         var uuid = logExtractor.ExtractUuid();
         Assert.Equal("003100193138510E35363631", uuid);
     }
