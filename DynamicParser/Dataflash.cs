@@ -80,8 +80,8 @@ namespace Parser
                    Messages["VIBE"].Select(x => x.Clip1).Cast<uint>().Last() +
                    Messages["VIBE"].Select(x => x.Clip2).Cast<uint>().Last();
         }
-
-        public double GetGpsFlightDistance()
+        
+        public double GetGpsPassedFlightDistance()
         {
             if (!Messages.ContainsKey("GPS") && !Messages.ContainsKey("GPS[0]")) return 0;
 
@@ -91,9 +91,9 @@ namespace Parser
             var gpsLatitudePoints = Messages[key].Select(x => x.Lat).Cast<double>().ToArray();
             var gpsLongitudePoints = Messages[key].Select(x => x.Lng).Cast<double>().ToArray();
 
-            return CalculationHelper.GetDistance(gpsLatitudePoints, gpsLongitudePoints);
+            return CalculationHelper.CalculateGpsTotalPassedDistance(gpsLatitudePoints, gpsLongitudePoints);
         }
-
+        
         public double GetMaxDistanceFromStartPoint()
         {
             if (!Messages.ContainsKey("GPS") && !Messages.ContainsKey("GPS[0]")) return 0;
@@ -103,7 +103,7 @@ namespace Parser
             var gpsLatitudePoints = Messages[key].Select(x => x.Lat).Cast<double>().ToArray();
             var gpsLongitudePoints = Messages[key].Select(x => x.Lng).Cast<double>().ToArray();
 
-            return CalculationHelper.GetMaxDistanceFromStartPoint(gpsLatitudePoints, gpsLongitudePoints);
+            return CalculationHelper.CalculateMaxDistanceFromStartPoint(gpsLatitudePoints, gpsLongitudePoints);
         }
 
         public dynamic GetGpsDataSetByTimeCode(ulong inputTimeUs)
@@ -116,7 +116,21 @@ namespace Parser
             return result;
         }
 
-        public double GetTotalClimb() => CalculationHelper.CalculateTotalClimb(Messages["NKF5"].Select(x => x.HAGL).Cast<double>());
+        public double GetTotalClimb()
+        {
+            IEnumerable<double> altitudes = null;
+            
+            if (Messages.TryGetValue("NKF5", out var nkf5Message))
+            {
+                altitudes = nkf5Message.Select(x => x.HAGL).Cast<double>();
+            }
+            else if (Messages.TryGetValue("GPS", out var gpsMessage))
+            {
+                altitudes = gpsMessage.Select(x => x.Alt).Cast<double>();
+            }
+            
+            return CalculationHelper.CalculateTotalClimb(altitudes);
+        }
 
         public string ExtractUuid()
         {

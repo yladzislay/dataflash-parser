@@ -29,6 +29,10 @@
       <EmbeddedResource Include="Logs\dataflash-sample-1.bin">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </EmbeddedResource>
+      <None Remove="Logs\dataflash-sample-5.bin" />
+      <EmbeddedResource Include="Logs\dataflash-sample-5.bin">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

@@ -32,4 +32,23 @@ public class DataflashParserTests
         var uuid = dataflash.ExtractUuid();
         Assert.Equal("003100193138510E35363631", uuid);
     }
+    
+    [Fact]
+    public void CalculationHelpersTests()
+    {
+        var directoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        Assert.NotNull(directoryPath);
+        var filePath = Path.Combine(directoryPath, "Logs", "dataflash-sample-5.bin");
+        using var file = File.OpenRead(filePath);
+        var dataflash = DataflashParser.ParseDataflash(file);
+            
+        var passedFlightDistance = dataflash.GetGpsPassedFlightDistance();
+        var maxDistanceFromStartPoint = dataflash.GetMaxDistanceFromStartPoint();
+        var totalClimb = dataflash.GetTotalClimb();
+            
+        Assert.NotEqual(0, passedFlightDistance);
+        Assert.NotEqual(0, maxDistanceFromStartPoint);
+        Assert.NotEqual(0, totalClimb);
+
+    }
 }
