@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <LangVersion>11</LangVersion>
+        <RootNamespace>UDIE.Adrupilot.Dataflash.Structure</RootNamespace>
+        <Authors>Uladzislau Darazhei Individual Entrepreneur</Authors>
+        <Company>Uladzislau Darazhei Individual Entrepreneur</Company>
+        <Product>Ardupilot Dataflash Parser</Product>
+        <AssemblyVersion></AssemblyVersion>
+        <FileVersion></FileVersion>
+        <PackageId />
+        <Version />
+    </PropertyGroup>
+
+</Project>

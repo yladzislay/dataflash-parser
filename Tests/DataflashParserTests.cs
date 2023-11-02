@@ -4,10 +4,10 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
-using Parser;
+using UDIE.Adrupilot.Dataflash.Dynamic;
 using Xunit;
 
-namespace Tests;
+namespace UDIE.Adrupilot.Dataflash.Tests;
 
 public class DataflashParserTests
 {
@@ -28,7 +28,7 @@ public class DataflashParserTests
         Assert.NotNull(directoryPath);
         var filePath = Path.Combine(directoryPath, "Logs", "dataflash-sample-1.bin");
         using var file = File.OpenRead(filePath);
-        var dataflash = DataflashParser.ParseDataflash(file);
+        var dataflash = Parser.ParseDataflash(file);
         var uuid = dataflash.ExtractUuid();
         Assert.Equal("003100193138510E35363631", uuid);
     }
@@ -40,7 +40,7 @@ public class DataflashParserTests
         Assert.NotNull(directoryPath);
         var filePath = Path.Combine(directoryPath, "Logs", "dataflash-sample-5.bin");
         using var file = File.OpenRead(filePath);
-        var dataflash = DataflashParser.ParseDataflash(file);
+        var dataflash = Parser.ParseDataflash(file);
             
         var passedFlightDistance = dataflash.GetGpsPassedFlightDistance();
         var maxDistanceFromStartPoint = dataflash.GetMaxDistanceFromStartPoint();
