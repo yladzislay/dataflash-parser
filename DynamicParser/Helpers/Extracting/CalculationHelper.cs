@@ -6,49 +6,27 @@ namespace Parser.Helpers.Extracting
 {
     public static class CalculationHelper
     {
-        public static double CalculateTotalClimb(IEnumerable<double> hagls)
-        {
-            double previewElement = 0;
-            double total = 0;
+        private static IEnumerable<double> CalculateClimbs(IEnumerable<double> altitudes) =>
+            altitudes.Zip(altitudes.Skip(1), (current, next) => current > next ? current - next : 0);
 
-            foreach (var element in hagls)
-            {
-                if (element > previewElement) total += (element - previewElement);
-                previewElement = element;
-            }
+        public static double CalculateTotalClimb(IEnumerable<double> altitudeItems) =>
+            CalculateClimbs(altitudeItems).Sum();
+        
+        private static IEnumerable<double> CalculateGpsPointToPointDistance(double[] gpsLatitudePoints, double[] gpsLongitudePoints) =>
+            Enumerable.Range(0, gpsLatitudePoints.Length - 1)
+                .Select(index => new GeoCoordinate(gpsLatitudePoints[index], gpsLongitudePoints[index])
+                    .GetDistanceTo(new GeoCoordinate(gpsLatitudePoints[index + 1], gpsLongitudePoints[index + 1])));
+        
+        public static double CalculateGpsTotalPassedDistance(double[] gpsLatitudePoints, double[] gpsLongitudePoints) => 
+            CalculateGpsPointToPointDistance(gpsLatitudePoints, gpsLongitudePoints)
+                .Sum();
 
-            return total;
-        }
+        private static IEnumerable<double> CalculateGpsPointToStartPointDistance(double[] gpsLatitudePoints, double[] gpsLongitudePoints) =>
+            Enumerable.Range(0, gpsLatitudePoints.Length - 1)
+                .Select(index => new GeoCoordinate(gpsLatitudePoints[index], gpsLongitudePoints[index])
+                    .GetDistanceTo(new GeoCoordinate(gpsLatitudePoints[0], gpsLongitudePoints[0])));
 
-        public static double GetDistance(double[] gpsLatitudePoints, double[] gpsLongitudePoints)
-        {
-            var result = new List<double>();
-
-            for (var index = 0; index < gpsLatitudePoints.Length-1; index++)
-            {
-                var distance =
-                    new GeoCoordinate(gpsLatitudePoints[index], gpsLongitudePoints[index])
-                        .GetDistanceTo(
-                        new GeoCoordinate(gpsLatitudePoints[index + 1], gpsLongitudePoints[index + 1]));
-
-                result.Add(distance);
-            }
-            
-            return result.Sum();
-        }
-
-        public static double GetMaxDistanceFromStartPoint(double[] gpsLatitudePoints, double[] gpsLongitudePoints)
-        {
-            var result = new List<double>();
-
-            for (var index = 0; index < gpsLatitudePoints.Length - 1; index++)
-            {
-                result.Add(
-                    new GeoCoordinate(gpsLatitudePoints[0], gpsLongitudePoints[0])
-                        .GetDistanceTo(new GeoCoordinate(gpsLatitudePoints[index + 1], gpsLongitudePoints[index + 1])));
-            }
-
-            return result.Max();
-        }
+        public static double CalculateMaxDistanceFromStartPoint(double[] gpsLatitudePoints, double[] gpsLongitudePoints) =>
+            CalculateGpsPointToStartPointDistance(gpsLatitudePoints, gpsLongitudePoints).Max();
     }
 }

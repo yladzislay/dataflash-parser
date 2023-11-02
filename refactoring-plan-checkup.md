@@ -3,7 +3,7 @@
   - [ ] Helpers
     - [ ] Enums
     - [ ] Extracting
-      - [ ] CalculationHelper.cs 
+      - [x] CalculationHelper.cs 
       - [x] GpsToUtcDateTimeConvertor.cs
     - [ ] MessagesTransforming
     - [ ] Parsing
@@ -18,4 +18,5 @@
 1. ReGroupByInstances sould be a part of a parsing stage.
 
 ### Passed plan:
+  - [x] Refactoring of Calculation Helpers.
   - [x] Define a new Dataflash class.
