@@ -1,9 +1,7 @@
-using System.Reflection;
-using Parser;
-using Parser.Helpers.Extracting;
+using UDIE.Adrupilot.Dataflash.Dynamic.Helpers.Extracting;
 using Xunit;
 
-namespace Tests
+namespace UDIE.Adrupilot.Dataflash.Tests
 {
     public class ExtractingHelpersTests
     {

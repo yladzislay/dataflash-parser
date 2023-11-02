@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+    <PackageId></PackageId>
+    <LangVersion>11</LangVersion>
+    <RootNamespace>UDIE.Adrupilot.Dataflash.Dynamic</RootNamespace>
+    <Company>Uladzislau Darazhei Individual Entrepreneur</Company>
+    <Product>Ardupilot Dataflash Parser</Product>
+    <AssemblyVersion></AssemblyVersion>
+    <FileVersion></FileVersion>
+    <AssemblyName>Dynamic</AssemblyName>
+    <Authors>Uladzislau Darazhei Individual Entrepreneur</Authors>
+    <Version />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GeoCoordinate.NetCore" Version="1.0.0.1" />
+  </ItemGroup>
+
+
+
+
+</Project>
