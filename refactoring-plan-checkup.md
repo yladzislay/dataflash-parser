@@ -8,12 +8,14 @@
     - [ ] MessagesTransforming
     - [ ] Parsing
     - [ ] ValidationHelper.cs
-  - [ ] DataflashExtractor.cs
+  - [ ] Dataflash.cs
   - [ ] DataflashParser.cs
-
 
 - [ ] StructureParser
 - [x] Tests
 
 ### Further priority plan:
-1. Define a new Dataflash class.
+1. ReGroupByInstances sould be a part of a parsing stage.
+
+### Passed plan:
+  - [x] Define a new Dataflash class.
