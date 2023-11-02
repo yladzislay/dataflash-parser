@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using UDIE.Adrupilot.Dataflash.Structure.Helpers;
 
 namespace UDIE.Adrupilot.Dataflash.Structure.Formats.Unsorted
 {

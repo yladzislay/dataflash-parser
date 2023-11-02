@@ -1,4 +1,4 @@
-﻿namespace UDIE.Adrupilot.Dataflash.Structure
+﻿namespace UDIE.Adrupilot.Dataflash.Structure.Helpers
 {
     public enum EventsEnum : byte
     {
