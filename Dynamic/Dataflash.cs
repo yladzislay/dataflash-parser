@@ -9,8 +9,8 @@ namespace UDIE.Adrupilot.Dataflash.Dynamic
 {
     public class Dataflash
     {
-        private Dictionary<byte, dynamic> FormatMessages { get; }
-        private Dictionary<string, List<dynamic>> Messages { get; set; }
+        public Dictionary<byte, dynamic> FormatMessages { get; }
+        public Dictionary<string, List<dynamic>> Messages { get; }
 
         public Dataflash(Dictionary<byte, dynamic> formatMessages, Dictionary<string, List<dynamic>> messages)
         {
@@ -26,27 +26,6 @@ namespace UDIE.Adrupilot.Dataflash.Dynamic
             {
                 gpsMessages.RemoveAll(message => message.Lat == 0 && message.Lng == 0);
             }
-        }
-
-        public IEnumerable<dynamic> GetMessagesGroupsAndColumnsInfo()
-        {
-            var result = new List<dynamic>();
-
-            foreach (var (key, value) in Messages)
-                result.Add(new
-                {
-                    value.Count,
-                    Name = key,
-                    Items = ((IEnumerable<string>) FormatMessages.Values.First(x => x.Name == key)
-                        .Columns).Select((x, i) => new
-                    {
-                        value.Count,
-                        Name = x,
-                        Index = i
-                    }).Where(x => x.Index != 0)
-                });
-
-            return result.Where(x => x.Count != 0).OrderBy(x => x.Name);
         }
 
         public double GetMaxDropRate()
