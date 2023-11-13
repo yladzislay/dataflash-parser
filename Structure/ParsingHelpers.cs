@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UDIE.Adrupilot.Dataflash.Structure.Formats.Battary;
+using UDIE.Adrupilot.Dataflash.Structure.Formats.Battery;
 using UDIE.Adrupilot.Dataflash.Structure.Formats.Communication;
 using UDIE.Adrupilot.Dataflash.Structure.Formats.Custom.Engine;
 using UDIE.Adrupilot.Dataflash.Structure.Formats.Custom.Powerboard;
