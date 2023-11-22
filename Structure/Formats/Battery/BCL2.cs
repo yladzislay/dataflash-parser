@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace UDIE.Adrupilot.Dataflash.Structure.Formats.Battary
+namespace UDIE.Adrupilot.Dataflash.Structure.Formats.Battery
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct BCL2

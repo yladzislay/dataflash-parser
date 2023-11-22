@@ -1,12 +1,12 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace UDIE.Adrupilot.Dataflash.Structure.Formats.Battary
+namespace UDIE.Adrupilot.Dataflash.Structure.Formats.Battery
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct BAT
+    public struct BAT2
     {
-        // @LoggerMessage: BAT
-        // FMT, 164, 37, BAT, Qfffffcf, TimeUS,Volt,VoltR,Curr,CurrTot,EnrgTot,Temp,Res
+        // @LoggerMessage: BAT2
+        // FMT, 165, 37, BAT2, Qfffffcf, TimeUS,Volt,VoltR,Curr,CurrTot,EnrgTot,Temp,Res
         // @Description: Gathered battery data
         // @Field: TimeUS: microseconds since system startup
         // @Field: Instance: battery instance number

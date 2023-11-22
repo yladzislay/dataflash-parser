@@ -40,8 +40,8 @@ namespace UDIE.Adrupilot.Dataflash.Dynamic
 
         private static void ReadFormatMessage(
             this BinaryReader reader,
-            Dictionary<byte, dynamic> formatMessages, 
-            Dictionary<string, List<dynamic>> messages
+            IDictionary<byte, dynamic> formatMessages, 
+            IDictionary<string, List<dynamic>> messages
             )
         {
             var fmtMessage = reader.ReadBytes(86);
@@ -62,8 +62,8 @@ namespace UDIE.Adrupilot.Dataflash.Dynamic
         private static void ReadDataMessage(
             this BinaryReader reader,
             byte messageType, 
-            Dictionary<byte, dynamic> formatMessages, 
-            Dictionary<string, List<dynamic>> messages
+            IReadOnlyDictionary<byte, dynamic> formatMessages, 
+            IReadOnlyDictionary<string, List<dynamic>> messages
             )
         {
             const byte messageHeaderSize = 3;
