@@ -10,7 +10,7 @@ namespace UDIE.Adrupilot.Dataflash.Structure
     {
         private const byte FormatMessageType = 0x80;
         private const byte EndOfMessageMarker = 0xFF;
-        private const byte BeginingMarker = 0x00;
+        private const byte BeginningMarker = 0x00;
 
         public static Dataflash ParseDataflash(Stream stream)
         {
@@ -33,7 +33,7 @@ namespace UDIE.Adrupilot.Dataflash.Structure
                     case FormatMessageType:
                         fmtMessages.Add(stream.ReadFmtMessage());
                         break;
-                    case BeginingMarker:
+                    case BeginningMarker:
                         break;
                     case EndOfMessageMarker:
                         break;
@@ -52,8 +52,7 @@ namespace UDIE.Adrupilot.Dataflash.Structure
             stream.Read(fmtBody, 0, 86);
             return ParsingHelpers.ParseMessage<FMT>(fmtBody);
         }
-            
-
+        
         private static dynamic ReadDataMessage(this Stream reader, byte messageType, IEnumerable<FMT> formatMessages)
         {
             var formatMessage = formatMessages.First(fmt => fmt.Type == messageType);
