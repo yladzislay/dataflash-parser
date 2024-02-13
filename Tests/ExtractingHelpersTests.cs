@@ -8,8 +8,8 @@ namespace UDIE.Adrupilot.Dataflash.Tests
         [Fact]
         public void ConvertGpsToUtcDateTime_Converts_Gps_Time_Correctly()
         {
-            var gpsWeek = 2286;
-            double gpsMillisecondsOfWeek = 259218000;
+            const int gpsWeek = 2286;
+            const double gpsMillisecondsOfWeek = 259218000;
             var expected = new DateTime(2023, 11, 1, 0, 0, 0, DateTimeKind.Utc);
             
             var actual = ExtractingHelpers.ConvertGpsToUtcDateTime(gpsWeek, gpsMillisecondsOfWeek);
