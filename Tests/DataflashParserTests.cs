@@ -29,7 +29,7 @@ public class DataflashParserTests
         var filePath = Path.Combine(directoryPath, "Logs", "dataflash-sample-1.bin");
         using var file = File.OpenRead(filePath);
         var dataflash = Parser.ParseDataflash(file);
-        var uuid = dataflash.ExtractUuid();
+        var uuid = Extractor.ExtractUuid(dataflash.Messages["MSG"]);
         Assert.Equal("003100193138510E35363631", uuid);
     }
     
@@ -42,9 +42,9 @@ public class DataflashParserTests
         using var file = File.OpenRead(filePath);
         var dataflash = Parser.ParseDataflash(file);
             
-        var passedFlightDistance = dataflash.GetGpsPassedFlightDistance();
-        var maxDistanceFromStartPoint = dataflash.GetMaxDistanceFromStartPoint();
-        var totalClimb = dataflash.GetTotalClimb();
+        var passedFlightDistance = Extractor.ExtractGpsPassedFlightDistance(dataflash.Messages["GPS"]);
+        var maxDistanceFromStartPoint = Extractor.ExtractMaxDistanceFromStartPoint(dataflash.Messages["GPS"]);
+        var totalClimb = Extractor.ExtractTotalClimb(Extractor.ExtractAltitudesFromGps(dataflash.Messages["GPS"]));
             
         Assert.NotEqual(0, passedFlightDistance);
         Assert.NotEqual(0, maxDistanceFromStartPoint);
