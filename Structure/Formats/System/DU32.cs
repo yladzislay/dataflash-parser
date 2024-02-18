@@ -1,13 +1,34 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace UDIE.Adrupilot.Dataflash.Structure.Formats.System
+namespace UDIE.Adrupilot.Dataflash.Structure.Formats.System;
+
+/// <summary>
+/// Структура DU32 представляет собой формат записи 32-битных данных с временной меткой.
+/// The DU32 structure represents the format for recording 32-bit data with a timestamp.
+/// </summary>
+
+/// <remarks>
+/// FMT, 9, 16, DU32, QBI, TimeUS,Id,Value
+/// </remarks>
+
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public struct DU32
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct DU32
-    {
-        // FMT, 9, 16, DU32, QBI, TimeUS,Id,Value
-        public ulong TimeUS { get; set; }
-        public byte Id { get; set; }
-        public uint Value { get; set; }
-    }
+    /// <summary>
+    /// Время в микросекундах с момента запуска системы.
+    /// Time in microseconds since system startup.
+    /// </summary>
+    public ulong TimeUS { get; set; }
+
+    /// <summary>
+    /// Идентификатор данных.
+    /// Data identifier.
+    /// </summary>
+    public byte Id { get; set; }
+
+    /// <summary>
+    /// Значение 32-битных данных.
+    /// Value of the 32-bit data.
+    /// </summary>
+    public uint Value { get; set; }
 }

@@ -1,19 +1,34 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace UDIE.Adrupilot.Dataflash.Structure.Formats.System
-{
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct MULT
-    {
-        // @LoggerMessage: MULT
-        // FMT, 203, 20, MULT, Qbd, TimeUS,Id,Mult
-        // @Description: Message mapping from single character to numeric multiplier
-        // @Field: TimeUS: microseconds since system startup
-        // @Field: Id: character referenced by FMTU
-        // @Field: Mult: numeric multiplier
+namespace UDIE.Adrupilot.Dataflash.Structure.Formats.System;
 
-        public ulong TimeUS { get; set; }
-        public sbyte Id { get; set; }
-        public double Mult { get; set; }
-    }
+/// <summary>
+/// Структура MULT предназначена для отображения символа на числовой множитель.
+/// The MULT structure is designed to map a single character to a numeric multiplier.
+/// </summary>
+
+/// <remarks>
+/// FMT, 203, 20, MULT, Qbd, TimeUS,Id,Mult
+/// </remarks>
+
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public struct MULT
+{
+    /// <summary>
+    /// Время в микросекундах с момента запуска системы.
+    /// Time in microseconds since system startup.
+    /// </summary>
+    public ulong TimeUS { get; set; }
+
+    /// <summary>
+    /// Символ, на который ссылается FMTU.
+    /// The character referenced by FMTU.
+    /// </summary>
+    public sbyte Id { get; set; }
+
+    /// <summary>
+    /// Числовой множитель.
+    /// Numeric multiplier.
+    /// </summary>
+    public double Mult { get; set; }
 }
